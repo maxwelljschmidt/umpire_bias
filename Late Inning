@@ -1,0 +1,16 @@
+inning = data[['pitch_name', 'plate_x', 'plate_z', 'description', 
+                   'stand', 'home_team', 'away_team', 'inning_topbot', 'game_year', 'inning']]
+inning = inning[inning['description'].isin(['called_strike', 'ball', 'blocked_ball'])]
+inning['description'].replace('blocked_ball', 'ball', inplace = True)
+
+late_inning = inning.loc[(inning['inning'] >= 5) & (inning['inning'] <=9)]
+early_inning = inning.loc[(inning['inning'] >= 1) & (inning['inning'] <=4)]
+extra_inning = inning.loc[inning['inning'] > 9]
+
+true_strikezone(early_inning)
+true_strikezone(late_inning)
+true_strikezone(extra_inning)
+
+create_viz(early_inning, "Early Innings")
+create_viz(late_inning, "Late Innings")
+create_viz(extra_inning, "Extra Innings")
