@@ -14,3 +14,11 @@ true_strikezone(extra_inning)
 create_viz(early_inning, "Early Innings")
 create_viz(late_inning, "Late Innings")
 create_viz(extra_inning, "Extra Innings")
+
+create_combined_viz(early_inning, "Early Innings")
+create_combined_viz(late_inning, "Late Innings")
+create_combined_viz(Extra_inning, "Extra Innings")
+
+contour_plot(early_inning, "Early Innings")
+contour_plot(late_inning, "Late Innings")
+contour_plot(extra_inning, "Extra Innings")
