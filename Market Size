@@ -1,0 +1,49 @@
+pitch_data = data[['pitch_name', 'plate_x', 'plate_z', 'description', 
+                   'stand', 'home_team', 'away_team', 'inning_topbot', 'game_year']]
+
+pitch_data['team'] = np.where(pitch_data['inning_topbot']=='Top', pitch_data["home_team"], pitch_data["away_team"])
+
+pitch_data = pitch_data[pitch_data['description'].isin(['called_strike', 'ball', 'blocked_ball'])]
+
+#pitch_data_2019 = pitch_data.loc[pitch_data['game_year']==2019]
+#large_market_2019= pitch_data_2019.loc[pitch_data_2019['team'].isin(["LAA", 'NYY', "BOS" "CHC", "SF"])]
+#small_market_2019= pitch_data_2019.loc[pitch_data_2019['team'].isin(["MIA", 'KC', "FLA" "CIN", "OAK"])]
+
+large_market= pitch_data.loc[pitch_data['team'].isin(["LAA", 'NYY', "BOS" "CHC", "SF"])]
+large_market.head(10)
+
+small_market= pitch_data.loc[pitch_data['team'].isin(["MIA", 'KC', "FLA" "CIN", "OAK"])]
+small_market.info
+
+fig, ax = plt.subplots(figsize =(10,10))
+
+# Outer Zone (To gage length from strikezone)
+
+plt.plot([-2,-2],[0,5], color="black")     
+plt.plot([2,2],[0,5], color="black")
+plt.plot([-2,2],[0,0], color="black")
+plt.plot([-2,2],[5,5], color="black")
+
+#Strikezone
+
+plt.plot([-.725,-.725],[1.5,3.5], color="black")  #left line
+plt.plot([.725,.725],[1.5,3.5], color="black")   #right line
+plt.plot([-.725,.725],[1.5,1.5], color="black")  #bottom line
+plt.plot([-.725,.725],[3.5,3.5], color="black")  #top line
+
+ax.spines['top'].set_visible(False)
+ax.spines['right'].set_visible(False)
+ax.spines['left'].set_visible(False)
+ax.spines['bottom'].set_visible(False)
+ax.set_xticks([])
+ax.set_yticks([])
+
+palette ={"ball": "green", "called_strike": "red"}    #differentiating balls and strikes
+
+ax = sns.scatterplot(data=large_market, x='plate_x', y='plate_z', hue = 'description', s = 7, palette = palette)
+ax.set_title('Large Market')
+
+plt.show()
+
+create_viz(large_market, "Large Market")
+create_viz(small_market, "Small Market")
